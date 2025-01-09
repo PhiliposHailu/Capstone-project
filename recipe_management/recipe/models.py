@@ -4,12 +4,6 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model() # proper way to retrive the user model
 
-class Ingredient(models.Model):
-    ingredient_name = models.CharField(unique=True, max_length=100)
-
-    def __str__(self):
-        return self.ingredient_name
-
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=50)
 
@@ -18,17 +12,11 @@ class Category(models.Model):
     
 class Recipe(models.Model):
 
-    # CATAGORY = [
-    #     ('Dessert', 'Dessert'),
-    #     ('Main_Course', 'Main_Course'),
-    # ]
-
-#may be make the title unique ??????????????????????????????????????/
-    title =                         models.CharField(max_length=100, blank=False, unique=True)
+    title =                         models.CharField(max_length=100, blank=False)
     description =                   models.TextField(max_length=300, blank=True, null=True)
     publisher=                      models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipe_publisher')
     category =                      models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='recipe_category', blank=True, null=True)
-    ingredients =                   models.ManyToManyField(Ingredient, related_name='recipe_ingredients')
+    ingredients =                   models.TextField()
     instructions =                  models.TextField(max_length=1000, blank=False)
     preparation_time =              models.PositiveIntegerField(help_text="preparation time in minutes eg. 30 or 90", blank=True, null=True)
     cooking_time =                  models.PositiveIntegerField(help_text="cooking time in minutes", blank=True, null=True)
