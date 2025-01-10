@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'recipe',
     'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -132,5 +133,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         # project level permission
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ]
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }

@@ -1,14 +1,12 @@
-from rest_framework import viewsets
 from django.contrib.auth import get_user_model
-from recipe.models import Recipe, Category
-from .serializers import UserSerializers, RecipeSerializers, CategorySerializers
+from recipe.models import Recipe
+from .serializers import UserSerializers, RecipeSerializers
 from rest_framework.permissions import AllowAny, IsAuthenticated, SAFE_METHODS, BasePermission
 from rest_framework import generics
 
 User = get_user_model()
 
-#custom permission that allows only the publisher
-#of the recipe to delete or update it
+# Custom Pemission Class
 class RecipUserEditPermission(BasePermission):
 
     message = "Editing recipe is restricted to the publisher only."
@@ -20,11 +18,12 @@ class RecipUserEditPermission(BasePermission):
         
         return obj.publisher == request.user
 
-#CRUD opetation api views
+#CRUD opetation Api Views
 
     #create new recipe
-class CreateView(generics.CreateAPIView):
+class CreateView(generics.ListCreateAPIView):
 
+    queryset = Recipe.objects.all()
     serializer_class = RecipeSerializers
 
     #list recipes
@@ -54,31 +53,22 @@ class DetailView(generics.RetrieveAPIView):
     serializer_class = RecipeSerializers
     queryset = Recipe.objects.all()
 
-#new user registeration apiview
+#New User API Registeration View
 class RegisterationView(generics.CreateAPIView):
 
     serializer_class = UserSerializers
-    #apply a view level that override our project level 
+    #apply a view level permission that overrides our project level 
     #permission in order to allow anyone to register(create an account)
     permission_classes = [AllowAny]
 
 
+# FilterView
 
+class FilterView(generics.ListAPIView):
 
+    permission_classes = [IsAuthenticated]
+    serializer_class = RecipeSerializers
 
-# #CRUD operations view for user
-# class UserViewset(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializers
-#     permission_classes = [IsAuthenticated]
-
-#     # permission_required = [isadmin]
-
-# #CRUD operations view for recipe
-# class RecipeViewset(viewsets.ModelViewSet):
-#     queryset = Recipe.objects.all()
-#     serializer_class = RecipeSerializers
-#     permission_classes = [IsAuthenticated]
-
-#     def perform_create(self, serializer):
-#         serializer.save(publisher=self.request.user)
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        return Recipe.objects.filter(publisher=pk)
