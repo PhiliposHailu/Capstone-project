@@ -127,11 +127,18 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# for a custom user model
 AUTH_USER_MODEL = 'users.CustomUser'
 
+# for static files
+STATIC_URL = '/static'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# Project level permission and Authentication
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        # project level permission
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
 
