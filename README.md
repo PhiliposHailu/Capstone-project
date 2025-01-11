@@ -2,15 +2,13 @@ My Django Capstone Project
 
 """Detailed of Endpoints with Examples"""
 
-        
-
 ## **A. User Authentication**
 
 ### **1. Authenticate a User**
 **Method:** `POST`
-**Endpoint:** `/api/users/login/`
+**Endpoint:** `/api/token/`
 
-**Description:** new user can register.
+**Description:** user can get tokens.
 
 **Request Parameters:**
 - `username` (string, required): The username for the user.
@@ -28,15 +26,13 @@ My Django Capstone Project
 ```json
 {
     "token": "alkghaoa2q9587",
-    "message": "User Loged in successfully",
-
 }
 
 ```
 
 ### **2. Register a New User**
 **Method:** `POST`
-**Endpoint:** `/api/users/register/`
+**Endpoint:** `/api/register/`
 
 **Description:** new user can register.
 
@@ -48,9 +44,9 @@ My Django Capstone Project
 **Sample Request:**
 ```json
 {
-  "username": "john_doe",
-  "password": "password123",
-  "email": "john.doe@example.com"
+    "username": "mike",
+    "email": "mike@gmail.com",
+    "password": "temp",
 }
 ```
 
@@ -58,10 +54,8 @@ My Django Capstone Project
 ```json
 {
     "id": 1,
-    "username": "john_doe",
-    "email": "john.doe@example.com",
-    "message": "User registered successfully",
-
+    "username": "mike",
+    "email": "mike@gmail.com",
 }
 
 ```
@@ -72,7 +66,7 @@ My Django Capstone Project
 ### **1. Create a New Recipe**
 
 **Method:** `POST`
-**Endpoint:** `/api/recipes/create/`
+**Endpoint:** `/api/create/`
 
 **Description:** authenticated users can create a new recipe.
 
@@ -109,11 +103,11 @@ My Django Capstone Project
 
 ### **2. Retrieve All Recipes**
 **Method:** `GET`
-**Endpoint:** `/api/recipes/`
+**Endpoint:** `/api/list/`
 
 **Description:** lists all available recipes.
 
-**Request Parameters:** None
+**Request Parameters:** 
 
 **Sample Response:**
 ```json
@@ -121,11 +115,13 @@ My Django Capstone Project
   {
     "id": 1,
     "title": "doro wot",
+    "ingridients": "chiken meat, eggs, onions, oil, butter",
     "categories": ["Ethiopian", "Dinner"]
   },
   {
     "id": 2,
     "title": "Chicken Curry",
+    "ingridients": "meat, eggs, onions, oil, butter",
     "categories": ["Indian", "Dinner"]
   }
 ]
@@ -135,7 +131,7 @@ My Django Capstone Project
 
 ### **3. Retrieve a Recipe by ID**
 **Method:** `GET`
-**Endpoint:** `/api/recipes/<id>/`
+**Endpoint:** `/api/list/<id>/`
 
 **Description:** details of a specific recipe by its ID.
 
@@ -158,7 +154,7 @@ My Django Capstone Project
 
 ### **4. Update a Recipe by ID**
 **Method:** `PUT`
-**Endpoint:** `/api/recipes/<id>/update`
+**Endpoint:** `/api/update/<id>/`
 
 **Description:** Updates an existing recipe by its ID.
 
@@ -191,7 +187,6 @@ My Django Capstone Project
     "ingredients": ["dorow", "eggs", "parmesan cheese", "bacon", "cream"],
     "instructions": "Boil chicken. Cook bacon. Mix eggs, cheese, and cream. Combine everything.",
     "categories": ["Ethiopian", "Dinner"],
-  "message": "Recipe updated successfully",
     
 }
 ```
@@ -200,7 +195,7 @@ My Django Capstone Project
 
 ### **5. Delete a Recipe by ID**
 **Method:** `DELETE`
-**Endpoint:** `/recipes/<id>/delete`
+**Endpoint:** `api/delete/<id>/`
 
 
 **Description:** Deletes a specific recipe by its ID.
@@ -211,7 +206,7 @@ My Django Capstone Project
 **Sample Response:**
 ```json
 {
-  "message": "Recipe deleted successfully"
+  // recipe with that id is deleted
 }
 ```
 
@@ -219,43 +214,31 @@ My Django Capstone Project
 
 ## **Filtered Viewing Endpoints**
 
-### **1. Retrieve Recipes by Category**
+### **1. Retrieve Recipes by user_id**
 **Method:** `GET`
-**Endpoint:** `/recipes/category/<category>`
+**Endpoint:** `api/filter/<id>/`
 
-**Description:** Retrieves recipes filtered by a specific category.
+**Description:** Retrieves recipes filtered by a specific user_id.
 
 **Path Parameter:**
-- `<category>` (string, required): The category to filter recipes by.
+- `<id>` (integer, required): The ID of the any user_id.
+
 
 **Sample Response:**
 ```json
 [
   {
-    "id": 1,
+    "user_id": 1,
     "title": "dorow wot",
     "categories": ["Ethiopian", "Dinner"]
+  }
+
+  {
+    "user_id": 1,
+    "title": "fried eggs",
+    "categories": ["breakfast"]
   }
 ]
 ```
 
 ---
-
-### **2. Retrieve Recipes by Ingredient**
-**Endpoint:** `GET /recipes/ingredient/<ingredient>`
-
-**Description:** Retrieves recipes filtered by a specific ingredient.
-
-**Path Parameter:**
-- `<ingredient>` (string, required): The ingredient to filter recipes by.
-
-**Sample Response:**
-```json
-[
-  {
-    "id": 1,
-    "title": "dorow wot",
-    "ingredients": ["dorow", "eggs", "parmesan cheese", "bacon"]
-  }
-]
-```
