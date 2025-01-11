@@ -1,20 +1,20 @@
-# Authentication Guide for Recipe Management API
+# Guide to Authentication for Recipe Management API
 
-A document that provides an overview of the authentication system implemented in the recipe management api. The API uses JSON Web Token(JWT) authentication to secure its endpoints.
+This document outlines the authentication framework used in the Recipe Management API, which relies on JSON Web Token (JWT) authentication to safeguard its endpoints.
 
 ---
 
 ## Overview of Authentication
-The API uses the `djangorestframework-simplejwt` library for JWT-based authentication. There are two types of tokens that are generated:
-- **Access Token**: Used for authenticating API requests.
-- **Refresh Token**: Used to obtain a new access token after the current one expires.
+The API leverages the `djangorestframework-simplejwt` library for implementing JWT-based authentication. Two types of tokens are generated:
+- **Access Token**: Grants access to API endpoints.
+- **Refresh Token**: Enables the generation of a new access token when the current one expires.
 
 ### Endpoints for Token Management
 
 #### Token Obtain
 - **URL**: `/api/token/`
 - **Method**: `POST`
-- **Description**: Generates an access token and a refresh token for the user.
+- **Description**: Issues an access token and refresh token for the user.
 - **Request Body**:
   ```json
   {
@@ -33,7 +33,7 @@ The API uses the `djangorestframework-simplejwt` library for JWT-based authentic
 #### Token Refresh
 - **URL**: `/api/token/refresh/`
 - **Method**: `POST`
-- **Description**: used to generate a new access token with the refresh token.
+- **Description**:  Generates a new access token using the refresh token.
 - **Request Body**:
   ```json
   {
@@ -49,9 +49,9 @@ The API uses the `djangorestframework-simplejwt` library for JWT-based authentic
 
 ---
 
-## Protecting API Endpoints
+## Securing API Endpoints
 
-Protected endpoints require the user to include the `Authorization` header in their requests, using the format:
+Endpoints requiring authentication must include the `Authorization` header in the following format:
 
 ```
 Authorization: Bearer <access_token>
@@ -59,7 +59,7 @@ Authorization: Bearer <access_token>
 
 For example:
 - **Key**: `Authorization`
-- **Value**: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
+- **Value**: `Bearer pyJhbfciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
 
 If a valid token is not provided, the API will respond with:
 ```json
@@ -70,7 +70,7 @@ If a valid token is not provided, the API will respond with:
 
 ---
 
-## Configuring JWT in Django
+## JWT Configuration in Django
 The following configurations are added to `settings.py` to enable JWT authentication:
 
 ```python
@@ -83,15 +83,15 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=21),
 }
 ```
 
 ---
 
-## Example Workflow
-### Step 1: Register a User
+## Authentication Workflow
+### Step 1: Register a New User
 - **URL**: `/api/register/`
 - **Method**: `POST`
 - **Request Body**:
@@ -129,7 +129,7 @@ SIMPLE_JWT = {
   ```
   Authorization: Bearer <access_token>
   ```
-- **Response**: A list of recipes if the token is valid.
+- **Response**:Returns a list of recipes if the token is valid.
 
 ### Step 4: Refresh the Access Token
 - **URL**: `/api/token/refresh/`
@@ -147,20 +147,3 @@ SIMPLE_JWT = {
   }
   ```
 
-<!-- ---
-
-## Common Errors and Resolutions
-
-### Error: "Token is invalid or expired."
-- **Cause**: The access token is no longer valid.
-- **Solution**: Use the refresh token to obtain a new access token.
-
-### Error: "Authentication credentials were not provided."
-- **Cause**: The `Authorization` header is missing or incorrectly formatted.
-- **Solution**: Ensure the header is present and uses the format: `Bearer <access_token>`.
-
-### Error: "Invalid refresh token."
-- **Cause**: The provided refresh token is invalid or has expired.
-- **Solution**: Log in again to obtain a new pair of tokens.
-
---- -->
