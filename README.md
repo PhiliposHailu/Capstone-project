@@ -1,6 +1,6 @@
-My Django Capstone Project
+#Django Capstone Project: Recipe Managemetn API: Endpoints Documentation
 
-"""Detailed of Endpoints with Examples"""
+## **Endpoints with Examples**
 
 ## **A. User Authentication**
 
@@ -214,14 +214,14 @@ My Django Capstone Project
 
 ## **Filtered Viewing Endpoints**
 
-### **1. Retrieve Recipes by user_id**
+### **1. Retrieve Recipes by publisher**
 **Method:** `GET`
 **Endpoint:** `api/filter/<id>/`
 
-**Description:** Retrieves recipes filtered by a specific user_id.
+**Description:** Retrieves recipes filtered by a specific publishers id.
 
 **Path Parameter:**
-- `<id>` (integer, required): The ID of the any user_id.
+- `<id>` (integer, required): The ID of the any publisher id.
 
 
 **Sample Response:**
